@@ -23,8 +23,8 @@
     "esModuleInterop": true,
     "baseUrl": "src",
     "paths": {},
-    "rootDirs": [],
+    "rootDirs": []
   },
   "exclude": ["node_modules"],
-  "include": ["./src/**/*.tsx", "./src/**/*.ts"],
+  "include": ["./src/**/*.tsx", "./src/**/*.ts"]
 }

@@ -1,8 +1,11 @@
-import { ClassDeclaration, ClassElement, isIdentifier, SyntaxKind, TypeChecker } from "typescript"
+import { ClassDeclaration, ClassElement, isIdentifier, SyntaxKind, TypeChecker } from 'typescript'
 
 // extends React.Component | Component | PureComponent | React.PureComponent
-export const isReactClassComponent = (classes: ClassDeclaration, checker: TypeChecker) => {
-  if (!classes.heritageClauses) { 
+export const isReactClassComponent = (
+  classes: ClassDeclaration,
+  checker: TypeChecker
+) => {
+  if (!classes.heritageClauses) {
     return false
   }
 
@@ -25,7 +28,9 @@ export const isReactClassComponent = (classes: ClassDeclaration, checker: TypeCh
     name = firstArgumentTypes.expression.getText()
   }
 
-  if (!/React\.Component|Component|PureComponent|React\.PureComponent/.test(name)) {
+  if (
+    !/React\.Component|Component|PureComponent|React\.PureComponent/.test(name)
+  ) {
     return false
   }
 
@@ -46,29 +51,53 @@ export const isStaticMember = (member: ClassElement) => {
 // static propTypes
 export const isPropTypesMember = (member: ClassElement) => {
   try {
-    const name = member.name !== undefined && isIdentifier(member.name) ? member.name.escapedText : null
+    const name =
+      member.name !== undefined && isIdentifier(member.name)
+        ? member.name.escapedText
+        : null
     return name === 'propTypes'
-  } catch(e) {
+  } catch (e) {
     return false
   }
 }
 
-export const insertAfter = <T>(collection: ArrayLike<T>, afterItem: T, newItem: T) => {
+export const insertAfter = <T>(
+  collection: ArrayLike<T>,
+  afterItem: T,
+  newItem: T
+) => {
   const arr = Array.from(collection)
   const index = arr.indexOf(afterItem) + 1
-  return arr.slice(0, index).concat(newItem).concat(arr.slice(index))
+  return arr
+    .slice(0, index)
+    .concat(newItem)
+    .concat(arr.slice(index))
 }
 
-export const insertBefore = <T>(collection: ArrayLike<T>, beforeItem: T, newItem: T | T[]) => {
+export const insertBefore = <T>(
+  collection: ArrayLike<T>,
+  beforeItem: T,
+  newItem: T | T[]
+) => {
   const arr = Array.from(collection)
   const index = arr.indexOf(beforeItem)
-  return arr.slice(0, index).concat(newItem).concat(arr.slice(index))
+  return arr
+    .slice(0, index)
+    .concat(newItem)
+    .concat(arr.slice(index))
 }
 
-export const replaceItem = <T>(collection: ArrayLike<T>, item: T, newItem: T) => {
+export const replaceItem = <T>(
+  collection: ArrayLike<T>,
+  item: T,
+  newItem: T
+) => {
   const arr = Array.from(collection)
   const index = arr.indexOf(item)
-  return arr.slice(0, index).concat(newItem).concat(arr.slice(index + 1))
+  return arr
+    .slice(0, index)
+    .concat(newItem)
+    .concat(arr.slice(index + 1))
 }
 
 export const removeItem = <T>(collection: ArrayLike<T>, item: T) => {
