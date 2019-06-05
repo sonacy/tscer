@@ -16,51 +16,141 @@ const program = new commander.Command()
 
 program
   .version(pkg.version)
-  .usage('tscer [filepath]')
   .option('-D --dir', 'specific a directory')
-  .parse(process.argv)
-
-const relativePath = program.args[0]
-
-if (relativePath === undefined) {
-  error('you need to specific a file or a dir!')
-} else {
-  const absolutePath = path.resolve(process.cwd(), relativePath)
-  const stat = fs.statSync(absolutePath)
-  const isDir = stat.isDirectory()
-
-  if (program.dir) {
-    if (!isDir) {
-      error(`${absolutePath} is not a directory!`)
+  .action(relativePath => {
+    if (relativePath === undefined) {
+      error('you need to specific a file or a dir!')
     } else {
-      // dir
-      const compileOptions = readTsConfig(absolutePath)
-      const files = glob.sync('**/*.jsx', {
-        cwd: absolutePath,
-        ignore: 'node_modules',
-      })
-      files.forEach(f => {
-        try {
-          run(f, absolutePath, compileOptions)
-        } catch (e) {
-          error(f)
-          error(e.message)
+      const absolutePath = path.resolve(process.cwd(), relativePath)
+      if (!fs.existsSync(absolutePath)) {
+        error(`${absolutePath} not exist!`)
+        return
+      }
+      const stat = fs.statSync(absolutePath)
+      const isDir = stat.isDirectory()
+
+      if (program.dir) {
+        if (!isDir) {
+          error(`${absolutePath} is not a directory!`)
+        } else {
+          // dir
+          const compileOptions = readTsConfig(absolutePath)
+          const files = glob.sync('**/*.jsx', {
+            cwd: absolutePath,
+            ignore: 'node_modules',
+          })
+          files.forEach(f => {
+            try {
+              run(f, absolutePath, compileOptions)
+            } catch (e) {
+              error(f)
+              error(e.message)
+            }
+          })
         }
-      })
-    }
-  } else {
-    if (isDir) {
-      error(`${absolutePath} is not a file!`)
-    } else {
-      // file
-      const dir = path.dirname(absolutePath)
-      const compileOptions = readTsConfig(dir)
-      try {
-        run(absolutePath, dir, compileOptions)
-      } catch (e) {
-        error(absolutePath)
-        error(e.message)
+      } else {
+        if (isDir) {
+          error(`${absolutePath} is not a file!`)
+        } else {
+          // file
+          const dir = path.dirname(absolutePath)
+          const compileOptions = readTsConfig(dir)
+          try {
+            run(path.basename(absolutePath), dir, compileOptions)
+          } catch (e) {
+            error(absolutePath)
+            error(e.message)
+          }
+        }
       }
     }
-  }
+  })
+
+program
+  .command('revert [filepath]')
+  .option('-D --dir', 'specific a directory')
+  .action(filepath => {
+    if (filepath === undefined) {
+      error('you need to specific a file or a dir!')
+      return
+    }
+
+    const absolutePath = path.resolve(process.cwd(), filepath)
+    if (!fs.existsSync(absolutePath)) {
+      error(`${absolutePath} not exist!`)
+      return
+    }
+    const stat = fs.statSync(absolutePath)
+    const isDir = stat.isDirectory()
+
+    if (program.dir) {
+      if (!isDir) {
+        error('you need to specific a dir, not a file!')
+        return
+      }
+
+      const targetDir = absolutePath
+
+      const tmpDir = path.join(targetDir, './.tscer/')
+
+      if (!fs.existsSync(tmpDir)) {
+        error(`${tmpDir} seems not exist, sorry we can not revert back!`)
+      } else {
+        // recursive replace file
+        replaceFile(tmpDir, targetDir)
+      }
+    } else {
+      if (isDir) {
+        error('you need to specific a file, not a dir!')
+        return
+      }
+      const targetDir = path.dirname(absolutePath)
+      const tmpDir = path.join(targetDir, './.tscer/')
+
+      if (!fs.existsSync(tmpDir)) {
+        error(`${tmpDir} seems not exist, sorry we can not revert back!`)
+      } else {
+        const filename = path.basename(absolutePath).split('.')[0]
+        const files = glob.sync(`*${filename}*`, {
+          cwd: tmpDir,
+        })
+        if (files.length === 0) {
+          error(`not found ${filename} in .tscer`)
+        } else {
+          // move back file
+          fs.moveSync(
+            path.join(tmpDir, files[0]),
+            path.join(targetDir, files[0])
+          )
+          // remove origin file
+          fs.removeSync(absolutePath)
+          // check .tscer has file
+          const tmpfiles = fs.readdirSync(tmpDir)
+          if (tmpfiles.length === 0) {
+            fs.removeSync(tmpDir)
+          }
+        }
+      }
+    }
+  })
+
+program.parse(process.argv)
+
+function replaceFile(srcDir: string, destDir: string) {
+  const files = fs.readdirSync(srcDir)
+
+  files.forEach(f => {
+    const absFilePath = path.join(srcDir, f)
+    const stat = fs.statSync(absFilePath)
+    if (stat.isDirectory()) {
+      // dir
+      replaceFile(absFilePath, destDir)
+    } else {
+      // file
+      // /Users/gulei.sonacy/Code/demo/teaToB/fe/src/pages/eventAnalysis/AnalysisContainer/.tscer/components/PartRefresh.jsx
+      // /Users/gulei.sonacy/Code/demo/teaToB/fe/src/pages/eventAnalysis/AnalysisContainer/components/PartRefresh.jsx
+      // /Users/gulei.sonacy/Code/demo/teaToB/fe/src/pages/eventAnalysis/AnalysisContainer/components/PartRefresh.tsx
+      console.log(absFilePath)
+    }
+  })
 }

@@ -42,7 +42,9 @@ export const run = (
     parser: 'typescript',
   })
   const name = realPath.slice(0, realPath.lastIndexOf('.'))
-  // fs.removeSync(realPath)
+  // create a dir .tscer, mv orgin file into this dir
+
+  fs.moveSync(realPath, path.join(dir, './.tscer', filename))
   fs.outputFileSync(`${name}.tsx`, res, {
     encoding: 'utf8',
   })
