@@ -31,7 +31,8 @@ program
         } else {
           // dir
           const compileOptions = readTsConfig(absolutePath)
-          const files = glob.sync('**/*.jsx', {
+          // support for jsx and js
+          const files = glob.sync('**/*.js*', {
             cwd: absolutePath,
             ignore: 'node_modules',
           })

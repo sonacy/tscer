@@ -2,6 +2,7 @@ import fs from 'fs-extra'
 import path from 'path'
 import prettier from 'prettier'
 import { generateGenericPropAndState } from 'transform/generateGenericPropAndState'
+import { parseTsFunc } from 'transform/parseTsFunc'
 import { removeImportPropTypes } from 'transform/removeImportPropTypes'
 import { removeStaticPropTypes } from 'transform/removeStaticPropTypes'
 import { CompilerOptions, createPrinter, createProgram, EmitHint, transform } from 'typescript'
@@ -25,6 +26,7 @@ export const run = (
     generateGenericPropAndState(typeChecker),
     removeImportPropTypes(),
     removeStaticPropTypes(typeChecker),
+    parseTsFunc(typeChecker),
   ])
 
   const printer = createPrinter()
@@ -42,10 +44,11 @@ export const run = (
     parser: 'typescript',
   })
   const name = realPath.slice(0, realPath.lastIndexOf('.'))
+  const ext = path.extname(realPath).replace('j', 't')
   // create a dir .tscer, mv orgin file into this dir
 
   fs.moveSync(realPath, path.join(dir, './.tscer', filename))
-  fs.outputFileSync(`${name}.tsx`, res, {
+  fs.outputFileSync(`${name}${ext}`, res, {
     encoding: 'utf8',
   })
 }

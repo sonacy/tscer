@@ -4,12 +4,14 @@
 
 ## cli
 
-- [ ] create a tmp dir to save the file
-- [ ] revert for a dir or a file
+- [x] create a tmp dir to save the file
+- [x] revert for a dir or a file
 
 ## props
 
 - [x] static propTypes -> interface props
+- [ ] this {} = this.props -> detect unused types
+- [ ] @connect or other decorators: export default -> export default connect(mapStateToProps, mapDispatchToProps)(Componnet)
 
 ## state
 
@@ -21,3 +23,7 @@
 
 - [x] constructor this.xxx -> xxx = {}
 - [x] remove constructor
+
+## ts file
+
+- [x] function -> parameter props
