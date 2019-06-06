@@ -1,14 +1,10 @@
-import chalk from 'chalk'
 import commander from 'commander'
 import { run } from 'compiler'
 import fs from 'fs-extra'
-import glob = require('glob')
+import glob from 'glob'
 import path from 'path'
+import { checkDirIsEmpty, error, replaceFile } from 'utils/files'
 import { readTsConfig } from 'utils/readTsconfig'
-
-const error = (msg: string) => {
-  console.error(chalk.redBright(msg))
-}
 
 const pkg = fs.readJSONSync(path.resolve(__dirname, '../package.json'))
 
@@ -98,6 +94,9 @@ program
       } else {
         // recursive replace file
         replaceFile(tmpDir, targetDir)
+        if (checkDirIsEmpty(tmpDir)) {
+          fs.removeSync(tmpDir)
+        }
       }
     } else {
       if (isDir) {
@@ -135,22 +134,3 @@ program
   })
 
 program.parse(process.argv)
-
-function replaceFile(srcDir: string, destDir: string) {
-  const files = fs.readdirSync(srcDir)
-
-  files.forEach(f => {
-    const absFilePath = path.join(srcDir, f)
-    const stat = fs.statSync(absFilePath)
-    if (stat.isDirectory()) {
-      // dir
-      replaceFile(absFilePath, destDir)
-    } else {
-      // file
-      // /Users/gulei.sonacy/Code/demo/teaToB/fe/src/pages/eventAnalysis/AnalysisContainer/.tscer/components/PartRefresh.jsx
-      // /Users/gulei.sonacy/Code/demo/teaToB/fe/src/pages/eventAnalysis/AnalysisContainer/components/PartRefresh.jsx
-      // /Users/gulei.sonacy/Code/demo/teaToB/fe/src/pages/eventAnalysis/AnalysisContainer/components/PartRefresh.tsx
-      console.log(absFilePath)
-    }
-  })
-}
