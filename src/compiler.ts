@@ -1,6 +1,7 @@
 import fs from 'fs-extra'
 import path from 'path'
 import prettier from 'prettier'
+import { rcDecoratorToHoc } from 'transform/decoratorToHoc'
 import { generateGenericPropAndState } from 'transform/generateGenericPropAndState'
 import { parseTsFunc } from 'transform/parseTsFunc'
 import { removeImportPropTypes } from 'transform/removeImportPropTypes'
@@ -24,6 +25,7 @@ export const run = (
 
   const result = transform(sourceFiles, [
     generateGenericPropAndState(typeChecker),
+    rcDecoratorToHoc(typeChecker),
     removeImportPropTypes(),
     removeStaticPropTypes(typeChecker),
     parseTsFunc(typeChecker),
@@ -43,6 +45,9 @@ export const run = (
     bracketSpacing: true,
     parser: 'typescript',
   })
+  console.log(res)
+
+  return
   const name = realPath.slice(0, realPath.lastIndexOf('.'))
   const ext = path.extname(realPath).replace('j', 't')
   // create a dir .tscer, mv orgin file into this dir
