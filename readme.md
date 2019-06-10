@@ -11,7 +11,7 @@
 
 - [x] static propTypes -> interface props
 - [ ] this {} = this.props -> detect unused types
-- [ ] @connect or other decorators: export default -> export default connect(mapStateToProps, mapDispatchToProps)(Componnet)
+- [x] @connect or other decorators: export default -> export default connect(mapStateToProps, mapDispatchToProps)(Componnet)
 
 ## state
 
@@ -27,3 +27,8 @@
 ## ts file
 
 - [x] function -> parameter props
+
+## tracert
+
+- [x] find unused files
+  

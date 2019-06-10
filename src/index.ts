@@ -3,6 +3,7 @@ import { run } from 'compiler'
 import fs from 'fs-extra'
 import glob from 'glob'
 import path from 'path'
+import { tracert } from 'tracert'
 import { checkDirIsEmpty, error, replaceFile } from 'utils/files'
 import { readTsConfig } from 'utils/readTsconfig'
 
@@ -133,5 +134,16 @@ program
       }
     }
   })
+
+program.command('tracert [dir] [filePath]').action((dir, filePath) => {
+  if (!dir || !filePath) {
+    error('dir and target must be given!')
+    return
+  }
+  const directory = path.resolve(process.cwd(), dir)
+  const indexFile = path.resolve(process.cwd(), filePath)
+  const compileOptions = readTsConfig(directory)
+  tracert(indexFile, directory, compileOptions)
+})
 
 program.parse(process.argv)

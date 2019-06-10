@@ -15,7 +15,7 @@ import {
   updateVariableDeclarationList,
   updateVariableStatement,
   visitEachChild,
-} from 'typescript';
+} from 'typescript'
 
 export const parseTsFunc = (typeChecker: TypeChecker) => (
   context: TransformationContext

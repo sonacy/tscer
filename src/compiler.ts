@@ -1,12 +1,12 @@
-import fs from 'fs-extra';
-import path from 'path';
-import prettier from 'prettier';
-import { rcDecoratorToHoc } from 'transform/decoratorToHoc';
-import { generateGenericPropAndState } from 'transform/generateGenericPropAndState';
-import { parseTsFunc } from 'transform/parseTsFunc';
-import { removeImportPropTypes } from 'transform/removeImportPropTypes';
-import { removeStaticPropTypes } from 'transform/removeStaticPropTypes';
-import { CompilerOptions, createPrinter, createProgram, EmitHint, transform } from 'typescript';
+import fs from 'fs-extra'
+import path from 'path'
+import prettier from 'prettier'
+import { rcDecoratorToHoc } from 'transform/decoratorToHoc'
+import { generateGenericPropAndState } from 'transform/generateGenericPropAndState'
+import { parseTsFunc } from 'transform/parseTsFunc'
+import { removeImportPropTypes } from 'transform/removeImportPropTypes'
+import { removeStaticPropTypes } from 'transform/removeStaticPropTypes'
+import { CompilerOptions, createPrinter, createProgram, EmitHint, transform } from 'typescript'
 
 export const run = (
   filename: string,
