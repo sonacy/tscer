@@ -1,15 +1,21 @@
 import {
   addSyntheticTrailingComment,
+  isArrowFunction,
   isFunctionDeclaration,
+  isVariableStatement,
   Node,
+  NodeBuilderFlags,
   ParameterDeclaration,
   SourceFile,
   SyntaxKind,
   TransformationContext,
   TypeChecker,
   updateFunctionDeclaration,
+  updateVariableDeclaration,
+  updateVariableDeclarationList,
+  updateVariableStatement,
   visitEachChild,
-} from 'typescript'
+} from 'typescript';
 
 export const parseTsFunc = (typeChecker: TypeChecker) => (
   context: TransformationContext
@@ -38,6 +44,31 @@ export const parseTsFunc = (typeChecker: TypeChecker) => (
         node.type,
         node.body
       )
+    }
+
+    if (
+      isVariableStatement(node) &&
+      node.declarationList &&
+      node.declarationList.declarations
+    ) {
+      const exp = node.declarationList.declarations[0]
+      if (exp.initializer && isArrowFunction(exp.initializer)) {
+        const aFunc = exp.initializer
+        const type = typeChecker.getTypeAtLocation(exp)
+
+        const nodeType = typeChecker.typeToTypeNode(
+          type,
+          undefined,
+          NodeBuilderFlags.NoTruncation
+        ) as any
+
+        const newVD = updateVariableDeclaration(exp, exp.name, nodeType, aFunc)
+
+        const newDList = updateVariableDeclarationList(node.declarationList, [
+          newVD,
+        ])
+        return updateVariableStatement(node, node.modifiers, newDList)
+      }
     }
 
     return node
