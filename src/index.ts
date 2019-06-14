@@ -1,11 +1,12 @@
 import commander from 'commander'
-import { run } from 'compiler'
 import fs from 'fs-extra'
 import glob from 'glob'
 import path from 'path'
-import { tracert } from 'tracert'
-import { checkDirIsEmpty, error, replaceFile } from 'utils/files'
-import { readTsConfig } from 'utils/readTsconfig'
+
+import { run } from './compiler'
+import { tracert } from './tracert'
+import { checkDirIsEmpty, error, replaceFile } from './utils/files'
+import { readTsConfig } from './utils/readTsconfig'
 
 const pkg = fs.readJSONSync(path.resolve(__dirname, '../package.json'))
 

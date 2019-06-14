@@ -37,7 +37,8 @@ import {
   updateInterfaceDeclaration,
   updateSourceFileNode,
 } from 'typescript'
-import { insertAfter, isReactClassComponent, removeItem, replaceItem } from 'utils/react'
+
+import { insertAfter, isReactClassComponent, removeItem, replaceItem } from '../utils/react'
 
 export const rcDecoratorToHoc = (typeChecker: TypeChecker) => () => (
   sourceFile: SourceFile

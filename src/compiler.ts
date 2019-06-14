@@ -1,20 +1,15 @@
 import fs from 'fs-extra'
 import path from 'path'
 import prettier from 'prettier'
-import { rcDecoratorToHoc } from 'transform/decoratorToHoc'
-import { generateGenericPropAndState } from 'transform/generateGenericPropAndState'
-import { parseTsFunc } from 'transform/parseTsFunc'
-import { removeImportPropTypes } from 'transform/removeImportPropTypes'
-import { removeStaticPropTypes } from 'transform/removeStaticPropTypes'
 import { CompilerOptions, createPrinter, createProgram, EmitHint, transform } from 'typescript'
 
-export const run = (
-  filename: string,
-  dir: string,
-  compileOptions: CompilerOptions
-) => {
-  const realPath = path.resolve(dir, filename)
+import { rcDecoratorToHoc } from './transform/decoratorToHoc'
+import { generateGenericPropAndState } from './transform/generateGenericPropAndState'
+import { parseTsFunc } from './transform/parseTsFunc'
+import { removeImportPropTypes } from './transform/removeImportPropTypes'
+import { removeStaticPropTypes } from './transform/removeStaticPropTypes'
 
+export const compile = (realPath: string, compileOptions: CompilerOptions) => {
   const program = createProgram([realPath], compileOptions)
 
   const sourceFiles = program
@@ -45,6 +40,17 @@ export const run = (
     bracketSpacing: true,
     parser: 'typescript',
   })
+  return res
+}
+
+export const run = (
+  filename: string,
+  dir: string,
+  compileOptions: CompilerOptions
+) => {
+  const realPath = path.resolve(dir, filename)
+
+  const res = compile(realPath, compileOptions)
 
   const name = realPath.slice(0, realPath.lastIndexOf('.'))
   const ext = path.extname(realPath).replace('j', 't')
