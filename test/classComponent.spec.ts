@@ -3,12 +3,11 @@ import path from 'path'
 import { compile } from '../src/compiler'
 import { readTsConfig } from '../src/utils/readTsconfig'
 
-describe('transform', () => {
+describe('react class component', () => {
   const testFile = path.resolve(__dirname, 'test-react.jsx')
   const dir = path.resolve(__dirname)
   const options = readTsConfig(dir)
   const result = compile(testFile, options)
-  console.log(result)
 
   it('should remove import PropTypes', () => {
     expect(result.includes(`import PropTypes from 'prop-types'`)).toBeFalsy()
