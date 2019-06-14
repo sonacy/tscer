@@ -1,13 +1,20 @@
-# Use the latest 2.1 version of CircleCI pipeline processing engine, see https://circleci.com/docs/2.0/configuration-reference/
 version: 2
 jobs:
   build:
+    docker:
+      - image: circleci/node:lts
     steps:
       - checkout
+      - run: npm i -g yarn
+      - run: yarn
       - run: yarn build
   test:
+    docker:
+      - image: circleci/node:lts
     steps:
       - checkout
+      - run: npm i -g yarn
+      - run: yarn
       - run: yarn test
 workflows:
   version: 2
@@ -15,4 +22,3 @@ workflows:
     jobs:
       - build
       - test
-      
