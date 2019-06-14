@@ -20,7 +20,7 @@
   "homepage": "https://github.com/sonacy/tscer",
   "scripts": {
     "start": "ts-node -r tsconfig-paths/register src/index.ts",
-    "test": "jest --watch-all",
+    "test": "jest",
     "build": "rm -rf dist && tsc",
     "prepublishOnly": "npm run build"
   },
