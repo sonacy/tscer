@@ -1,19 +1,36 @@
 {
   "name": "tscer",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "0.0.2",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "bin": "bin/tscer",
   "license": "MIT",
+  "author": {
+    "name": "sonacy",
+    "email": "sonacy2538@163.com",
+    "url": "https://github.com/sonacy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:sonacy/tscer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sonacy/tscer/issues"
+  },
+  "homepage": "https://github.com/sonacy/tscer",
   "scripts": {
     "start": "ts-node -r tsconfig-paths/register src/index.ts",
-    "test": "jest --watch-all"
+    "test": "jest --watch-all",
+    "build": "rm -rf dist && tsc",
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@types/commander": "^2.12.2",
     "@types/fs-extra": "^7.0.0",
     "@types/glob": "^7.1.1",
     "@types/jest": "^24.0.14",
     "@types/node": "^12.0.2",
     "@types/prettier": "^1.16.4",
+    "@types/progress": "^2.0.3",
     "@types/react": "^16.8.19",
     "@types/react-dom": "^16.8.4",
     "jest": "^24.8.0",
@@ -31,6 +48,7 @@
     "fs-extra": "^8.0.1",
     "glob": "^7.1.4",
     "prettier": "^1.17.1",
+    "progress": "^2.0.3",
     "typescript": "^3.5.2"
   }
 }

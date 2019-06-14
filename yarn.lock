@@ -318,13 +318,6 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
-"@types/commander@^2.12.2":
-  version "2.12.2"
-  resolved "http://bnpm.byted.org/@types/commander/download/@types/commander-2.12.2.tgz#183041a23842d4281478fa5d23c5ca78e6fd08ae"
-  integrity sha1-GDBBojhC1CgUePpdI8XKeOb9CK4=
-  dependencies:
-    commander "*"
-
 "@types/events@*":
   version "3.0.0"
   resolved "http://bnpm.byted.org/@types/events/download/@types/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
@@ -402,6 +395,13 @@
   version "1.16.4"
   resolved "http://bnpm.byted.org/@types/prettier/download/@types/prettier-1.16.4.tgz#5e5e97702cb68498aaba7349b941648daaf2385c"
   integrity sha1-Xl6XcCy2hJiqunNJuUFkjaryOFw=
+
+"@types/progress@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@types/progress/-/progress-2.0.3.tgz#7ccbd9c6d4d601319126c469e73b5bb90dfc8ccc"
+  integrity sha512-bPOsfCZ4tsTlKiBjBhKnM8jpY5nmIll166IPD58D92hR7G7kZDfx5iB9wGF4NfZrdKolebjeAr3GouYkSGoJ/A==
+  dependencies:
+    "@types/node" "*"
 
 "@types/prop-types@*":
   version "15.7.1"
@@ -847,7 +847,7 @@ combined-stream@^1.0.6, combined-stream@~1.0.6:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@*, commander@^2.12.1, commander@^2.20.0, commander@~2.20.0:
+commander@^2.12.1, commander@^2.20.0, commander@~2.20.0:
   version "2.20.0"
   resolved "http://bnpm.byted.org/commander/download/commander-2.20.0.tgz#d58bb2b5c1ee8f87b0d340027e9e94e222c5a422"
   integrity sha1-1YuytcHuj4ew00ACfp6U4iLFpCI=
@@ -2860,6 +2860,11 @@ process-nextick-args@~2.0.0:
   version "2.0.0"
   resolved "http://bnpm.byted.org/process-nextick-args/download/process-nextick-args-2.0.0.tgz#a37d732f4271b4ab1ad070d35508e8290788ffaa"
   integrity sha1-o31zL0JxtKsa0HDTVQjoKQeI/6o=
+
+progress@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
+  integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
 prompts@^2.0.1:
   version "2.1.0"

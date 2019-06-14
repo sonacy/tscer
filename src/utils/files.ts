@@ -49,3 +49,7 @@ export const checkDirIsEmpty = (dir: string): boolean => {
 export const error = (msg: string) => {
   console.error(chalk.redBright(msg))
 }
+
+export const success = (msg: string) => {
+  console.info(chalk.yellow(msg))
+}

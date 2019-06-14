@@ -5,7 +5,8 @@ import path from 'path'
 
 import { run } from './compiler'
 import { tracert } from './tracert'
-import { checkDirIsEmpty, error, replaceFile } from './utils/files'
+import { checkDirIsEmpty, error, replaceFile, success } from './utils/files'
+import { createProgressBar } from './utils/progress'
 import { readTsConfig } from './utils/readTsconfig'
 
 const pkg = fs.readJSONSync(path.resolve(__dirname, '../package.json'))
@@ -38,14 +39,24 @@ program
             cwd: absolutePath,
             ignore: 'node_modules',
           })
+
+          const bar = createProgressBar(files.length)
+
           files.forEach(f => {
             try {
               run(f, absolutePath, compileOptions)
+              bar.tick({
+                file: f,
+              })
             } catch (e) {
               error(f)
               error(e.message)
             }
           })
+
+          if (bar.complete) {
+            success('compile success!')
+          }
         }
       } else {
         if (isDir) {
@@ -56,6 +67,7 @@ program
           const compileOptions = readTsConfig(dir)
           try {
             run(path.basename(absolutePath), dir, compileOptions)
+            success('compile success!')
           } catch (e) {
             error(absolutePath)
             error(e.message)
@@ -100,6 +112,7 @@ program
         if (checkDirIsEmpty(tmpDir)) {
           fs.removeSync(tmpDir)
         }
+        success('revert success!')
       }
     } else {
       if (isDir) {
@@ -131,6 +144,7 @@ program
           if (tmpfiles.length === 0) {
             fs.removeSync(tmpDir)
           }
+          success('revert success!')
         }
       }
     }
