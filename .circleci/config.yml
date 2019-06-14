@@ -5,17 +5,15 @@ jobs:
       - image: circleci/node:lts
     steps:
       - checkout
-      - run: npm i -g yarn
-      - run: yarn
-      - run: yarn build
+      - run: npm i
+      - run: npm run build
   test:
     docker:
       - image: circleci/node:lts
     steps:
       - checkout
-      - run: npm i -g yarn
-      - run: yarn
-      - run: yarn test
+      - run: npm i
+      - run: npm run test
 workflows:
   version: 2
   build_and_test:
