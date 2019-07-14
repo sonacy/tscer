@@ -1,7 +1,7 @@
 import fs from 'fs-extra'
 import path from 'path'
 import prettier from 'prettier'
-import { CompilerOptions, createPrinter, createProgram, EmitHint, transform } from 'typescript'
+import { CompilerOptions, createPrinter, createProgram, EmitHint, getDefaultCompilerOptions, transform } from 'typescript'
 
 import { rcDecoratorToHoc } from './transform/decoratorToHoc'
 import { generateGenericPropAndState } from './transform/generateGenericPropAndState'
@@ -57,6 +57,17 @@ export const run = (
   // create a dir .tscer, mv orgin file into this dir
 
   fs.moveSync(realPath, path.join(dir, './.tscer', filename))
+  fs.outputFileSync(`${name}${ext}`, res, {
+    encoding: 'utf8',
+  })
+}
+
+export const convert = (realPath: string) => {
+  const compileOptions = getDefaultCompilerOptions()
+  const res = compile(realPath, compileOptions)
+
+  const name = realPath.slice(0, realPath.lastIndexOf('.'))
+  const ext = path.extname(realPath).replace('j', 't')
   fs.outputFileSync(`${name}${ext}`, res, {
     encoding: 'utf8',
   })

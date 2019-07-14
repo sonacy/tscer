@@ -3,11 +3,13 @@ import fs from 'fs-extra'
 import glob from 'glob'
 import path from 'path'
 
-import { run } from './compiler'
+import { convert, run } from './compiler'
 import { tracert } from './tracert'
 import { checkDirIsEmpty, error, replaceFile, success } from './utils/files'
 import { createProgressBar } from './utils/progress'
 import { readTsConfig } from './utils/readTsconfig'
+
+export { convert }
 
 const pkg = fs.readJSONSync(path.resolve(__dirname, '../package.json'))
 
